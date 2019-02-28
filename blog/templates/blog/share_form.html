@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Share a post{% endblock %}
+{% block content %}
+
+{% if messages %}
+<div class="alert alert-success" role ='alert'>
+    {% for m in messages %}
+    {% if message.tags %} class="{{ message.tags }}"{% endif %}{{ m }}
+    {% endfor %}
+</div>
+
+{% else %}
+<h2>Share Post Titled "{{ slug_name.title }}" by e-mail</h2>
+<form action="." method="post">
+	{{ form|crispy}}
+	{% csrf_token %}
+	<input type="submit" value="Send e-mail">
+</form>
+{% endif %}
+{% endblock %}

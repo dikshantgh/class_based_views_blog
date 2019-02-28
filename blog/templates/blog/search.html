@@ -1,0 +1,36 @@
+{% extends "blog/base.html" %}
+
+{% block title %} Search | Dikshant's Blog  {% endblock %}
+{% block content %}
+
+{% if request.GET.q %}
+	You searched for word "{{request.GET.q}}" :
+{% else %}
+	You didn't entered a word. All the avaliable posts are :
+
+{% endif %}
+<hr>
+
+{% for posts in main_post %}
+
+
+<h2>
+	<a href="{{ posts.get_absolute_url }}">
+		{{ posts.title }}
+	</a>
+</h2>
+
+<p class="font-italic text-secondary">
+	Published {{ posts.publish }} by {{ posts.author }}
+</p>
+
+{{ posts.body|truncatewords:30|linebreaks }}
+
+{% empty %}
+
+	<p>Sorry! No match Found</p>
+
+{% endfor %}
+<hr>
+{% include "blog/pagination.html" with page=page_obj %}
+{% endblock %}

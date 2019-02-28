@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+
+{% block title %} Dikshant's Blog {% endblock %}
+{% block content %}
+
+
+{% for posts in post %}
+
+<h2>
+	<a href="{{ posts.get_absolute_url }}">
+		{{ posts.title }}
+	</a>
+</h2>
+
+<p class="font-italic text-secondary">
+	Published {{ posts.publish }} by {{ posts.author }}
+</p>
+{{ posts.body|truncatewords:30|linebreaks }}
+{% endfor %}
+{% include "blog/pagination.html" with page=page_obj %}
+{% endblock %}

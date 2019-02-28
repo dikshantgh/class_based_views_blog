@@ -1,0 +1,58 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}{{ main_post.title }}{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<div class="alert alert-success" role ='alert'>
+    {% for m in messages %}
+    {% if message.tags %} class="{{ message.tags }}"{% endif %}{{ m }}
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<h1>{{ main_post.title }}</h1>
+<p class="font-italic text-secondary">
+	Published {{ main_post.publish }} by {{ main_post.author }}
+</p>
+
+<p>
+	<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
+		Share on Facebook
+	</a>
+</p>
+
+<div class = "text-justify">
+{{ main_post.body|linebreaks }}
+
+</div>
+<hr>
+<h2>Comments</h2>
+<p> {{main_post.comments.count}} comments</p>
+<hr>
+{% for comment in main_post.comments.all %}
+
+	<strong>{{comment.name|linebreaks}}</strong>
+	<p class="font-italic text-secondary">
+		{{comment.created}}
+	</p>
+	{{ comment.comment }}
+	<hr>
+{% empty %}
+
+<p>There are no comments yet.</p>
+
+{% endfor %}
+
+
+
+ <h2>Add a new comment</h2>
+<form class ="form" action="{{ main_post.get_absolute_url }}" method="post">
+	{{form_comment|crispy}}
+	{% csrf_token %}
+	<p><input type="submit" value="Add comment"></p>
+</form>
+
+{% endblock %}
